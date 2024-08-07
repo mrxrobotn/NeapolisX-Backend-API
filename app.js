@@ -2,13 +2,14 @@ import express from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import cors from 'cors';
+import userRoutes from './src/routes/user.js';
+import artefactRoutes from './src/routes/artefact.js';
+import puzzleRoutes from './src/routes/puzzle.js';
 
-// Import v1 routes
-import userRoutesV1 from './src/v1/routes/user.js';
 
 const app = express();
 
-const apiURLV1 = '/api/v1';
+const apiURL = '/api/v1';
 var db_url = '';
 
 if (process.env.NODE_ENV === 'dev') {
@@ -23,7 +24,6 @@ mongoose
   .connect(`${db_url}`)
   .then(() => {
     console.log(`Connected to database in mode ${process.env.NODE_ENV}`);
-    // Set CORS headers after retrieving credentials
     app.use(cors());
   })
   .catch(err => {
@@ -39,6 +39,8 @@ app.use(function (req, res, next) {
 });
 
 app.use(express.json());
-app.use(`${apiURLV1}/users`, userRoutesV1);
+app.use(`${apiURL}/users`, userRoutes);
+app.use(`${apiURL}/artefacts`, artefactRoutes);
+app.use(`${apiURL}/puzzles`, puzzleRoutes);
 
 export default app;
