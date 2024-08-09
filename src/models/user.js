@@ -26,39 +26,36 @@ const userSchema = new Schema(
         review: {
             type: String,
         },
-        artifactsData: [
-            {
-                skipped: {
-                    type: Boolean
+        artifactsData: {
+            skipped: {
+                type: Boolean,
+                default: false
+            },
+            artefacts: [{
+                artefactId: {
+                    type: Schema.Types.ObjectId,
+                    ref: 'Artefact',
                 },
-                artefacts: [{
-                    artefactId: { 
-                        type: Schema.Types.ObjectId,
-                        ref: 'Artefact',
-                    },
-                    timeSpent: {
-                        type: String,
-                    },
-                }]
-
-            }
-        ],
-        miniGames: [
-            {
-                skipped: {
-                    type: Boolean
+                timeSpent: {
+                    type: String,
                 },
-                puzzles: [{
-                    puzzleId: {
-                        type: Schema.Types.ObjectId,
-                        ref: 'Puzzle',
-                    },
-                    timeSpent: {
-                        type: String,
-                    },
-                }]
-            }
-        ]
+            }]
+        },
+        miniGames: {
+            skipped: {
+                type: Boolean,
+                default: false
+            },
+            puzzles: [{
+                puzzleId: {
+                    type: Schema.Types.ObjectId,
+                    ref: 'Puzzle',
+                },
+                timeSpent: {
+                    type: String,
+                },
+            }]
+        }
 
     },
     {

@@ -20,5 +20,15 @@
   "devDependencies": {
     "eslint": "^8.48.0",
     "nodemon": "^3.0.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrxrobotn/NeapolisX-Backend-API"
+  },
+  "author": "Mouez Benkhalil",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mrxrobotn/NeapolisX-Backend-API/issues"
+  },
+  "homepage": "https://github.com/mrxrobotn/NeapolisX-Backend-API#readme"
 }
