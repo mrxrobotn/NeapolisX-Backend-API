@@ -166,7 +166,7 @@ export async function updateArtifactsData(req, res) {
 export async function updateMinigamesData(req, res) {
   try {
     const { tezWallet } = req.params;
-    const { skipped, puzzles } = req.body.miniGames;
+    const { skipped, puzzles } = req.body.puzzlesMinigame;
 
     if (!tezWallet) {
       return res.status(400).json({ error: "TezWallet must be provided" });
@@ -184,7 +184,7 @@ export async function updateMinigamesData(req, res) {
     }
 
     // Get existing minigame IDs from the user's document
-    const existingPuzzlesIds = new Set(user.miniGames.puzzles.map(a => a.puzzleId.toString()));
+    const existingPuzzlesIds = new Set(user.puzzlesMinigame.puzzles.map(a => a.puzzleId.toString()));
 
     // Filter out minigames that already exist
     const newPuzzles = puzzles.filter(a => !existingPuzzlesIds.has(a.puzzleId.toString()));
@@ -198,8 +198,8 @@ export async function updateMinigamesData(req, res) {
     const updatedUser = await User.findOneAndUpdate(
       { tezWallet },
       {
-        $set: { 'miniGames.skipped': skipped },
-        $push: { 'miniGames.puzzles': { $each: newPuzzles } }
+        $set: { 'puzzlesMinigame.skipped': skipped },
+        $push: { 'puzzlesMinigame.puzzles': { $each: newPuzzles } }
       },
       { new: true, runValidators: true }
     );

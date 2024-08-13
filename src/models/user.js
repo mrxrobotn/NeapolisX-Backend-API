@@ -41,7 +41,7 @@ const userSchema = new Schema(
                 },
             }]
         },
-        miniGames: {
+        puzzlesMinigame: {
             skipped: {
                 type: Boolean,
                 default: false
