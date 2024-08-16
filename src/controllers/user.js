@@ -2,9 +2,9 @@ import User from "../models/user.js";
 
 // Add a new user
 export function addUser(req, res) {
-  const { tezWallet, firstName, lastName, email } = req.body;
+  const { tezWallet, name, email } = req.body;
 
-  if (!tezWallet || !firstName || !lastName || !email) {
+  if (!tezWallet || !name || !email) {
     return res.status(400).json({ error: "All required fields must be provided" });
   }
 
@@ -83,19 +83,19 @@ export function getUserByWallet(req, res) {
 // Update user information
 export function updateUserInfo(req, res) {
   const { tezWallet } = req.params;
-  const { firstName, lastName, email } = req.body;
+  const { name, email } = req.body;
 
   if (!tezWallet) {
     return res.status(400).json({ error: "TezWallet must be provided" });
   }
 
-  if (!firstName || !lastName || !email) {
+  if (!name || !email) {
     return res.status(400).json({ error: "All required fields must be provided" });
   }
 
   User.findOneAndUpdate(
     { tezWallet },
-    { $set: { firstName, lastName, email } },
+    { $set: { name, email } },
     { new: true }
   )
     .then((updatedUser) => {
