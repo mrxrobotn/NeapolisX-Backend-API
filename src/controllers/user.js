@@ -1,21 +1,34 @@
 import User from "../models/user.js";
 
-// Add a new user
-export function addUser(req, res) {
-  const { tezWallet, name, email } = req.body;
+// Check if a given tezWallet exists and add a user if it does not
+export async function addUser(req, res) {
+  let { tezWallet, name, email } = req.body;
 
-  if (!tezWallet || !name || !email) {
-    return res.status(400).json({ error: "All required fields must be provided" });
+  if (!tezWallet) {
+    return res.status(400).json({ error: "TezWallet must be provided" });
   }
 
-  User.create(req.body)
-    .then((user) => {
-      res.status(201).json(user);
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
-    });
+  // Set default null values for name and email if they are empty
+  name = name || null;
+  email = email || null;
+
+  try {
+    // Check if the tezWallet already exists
+    const existingUser = await User.findOne({ tezWallet });
+
+    if (existingUser) {
+      return res.status(400).json({ error: "User with this TezWallet already exists" });
+    }
+
+    // Create the new user if the tezWallet does not exist
+    const user = await User.create({ tezWallet, name, email });
+    res.status(201).json(user);
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 }
+
 
 // Check if a given tezWallet exists
 export async function checkTezWalletExists(req, res) {
