@@ -5,8 +5,10 @@ const router = express.Router();
 
 router.route("/")
   .post(addUser)
-  .get(checkTezWalletExists);
   
+router.route("/check-wallet")
+  .post(checkTezWalletExists);
+
 router.route("/:tezWallet")
   .get(getUserByWallet);
 
