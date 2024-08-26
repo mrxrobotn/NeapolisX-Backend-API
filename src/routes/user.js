@@ -1,11 +1,21 @@
-import { addUser, getUserById, updateUserInfo, updateArtifactsData, updateMinigamesData, checkTezWalletExists, getUserByWallet } from "../controllers/user.js";
+import {
+  addUser,
+  getUserById,
+  updateUserInfo,
+  updateSkippedArtefactsField,
+  updateArtefactsArray,
+  updatePuzzlesArray,
+  checkTezWalletExists,
+  getUserByWallet,
+  updateSkippedPuzzlesField
+} from "../controllers/user.js";
 import express from "express";
 
 const router = express.Router();
 
 router.route("/")
-  .post(addUser)
-  
+  .post(addUser);
+
 router.route("/check-wallet")
   .post(checkTezWalletExists);
 
@@ -15,13 +25,19 @@ router.route("/:tezWallet")
 router.route("/info/:tezWallet")
   .put(updateUserInfo);
 
-router.route("/artefact/:tezWallet")
-  .put(updateArtifactsData);
+router.route("/skip-artefacts/:tezWallet")
+  .put(updateSkippedArtefactsField);
 
-router.route("/puzzle/:tezWallet")
-  .put(updateMinigamesData);
+router.route("/artefacts/:tezWallet")
+  .put(updateArtefactsArray);
+
+router.route("/skip-puzzles/:tezWallet")
+  .put(updateSkippedPuzzlesField);
+
+router.route("/puzzles/:tezWallet")
+  .put(updatePuzzlesArray);
 
 router.route("/id/:_id")
-  .get(getUserById)
+  .get(getUserById);
 
 export default router;

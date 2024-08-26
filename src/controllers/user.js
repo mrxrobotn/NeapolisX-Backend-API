@@ -124,17 +124,21 @@ export function updateUserInfo(req, res) {
 }
 
 // Add an artifact to the artifactsData array and update the skipped field
-export async function updateArtifactsData(req, res) {
+export async function updateArtefactsArray(req, res) {
   try {
     const { tezWallet } = req.params;
-    const { skipped, artefacts } = req.body.artifactsData;
+    const { artefacts } = req.body.artifactsData;
 
     if (!tezWallet) {
       return res.status(400).json({ error: "TezWallet must be provided" });
     }
 
-    if (skipped === undefined || !Array.isArray(artefacts)) {
+    if (!Array.isArray(artefacts)) {
       return res.status(400).json({ error: "Invalid artifactsData format" });
+    }
+
+    if (artefacts.length === 0) {
+      return res.status(400).json({ error: "No artefacts provided" });
     }
 
     // Fetch the existing user document
@@ -159,7 +163,6 @@ export async function updateArtifactsData(req, res) {
     const updatedUser = await User.findOneAndUpdate(
       { tezWallet },
       {
-        $set: { 'artifactsData.skipped': skipped },
         $push: { 'artifactsData.artefacts': { $each: newArtefacts } }
       },
       { new: true, runValidators: true }
@@ -175,17 +178,77 @@ export async function updateArtifactsData(req, res) {
   }
 }
 
-// Add a minigame to the MiniGames array and update the skipped field
-export async function updateMinigamesData(req, res) {
+export async function updateSkippedArtefactsField(req, res) {
   try {
     const { tezWallet } = req.params;
-    const { skipped, puzzles } = req.body.puzzlesMinigame;
+    const { skipped } = req.body;
 
     if (!tezWallet) {
       return res.status(400).json({ error: "TezWallet must be provided" });
     }
 
-    if (skipped === undefined || !Array.isArray(puzzles)) {
+    if (skipped === undefined) {
+      return res.status(400).json({ error: "Skipped field must be provided" });
+    }
+
+    // Fetch and update the user document
+    const updatedUser = await User.findOneAndUpdate(
+      { tezWallet },
+      { $set: { 'artifactsData.skipped': skipped } },
+      { new: true, runValidators: true }
+    );
+
+    if (updatedUser) {
+      res.status(200).json(updatedUser);
+    } else {
+      res.status(404).json({ error: "User not found" });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
+export async function updateSkippedPuzzlesField(req, res) {
+  try {
+    const { tezWallet } = req.params;
+    const { skipped } = req.body;
+
+    if (!tezWallet) {
+      return res.status(400).json({ error: "TezWallet must be provided" });
+    }
+
+    if (skipped === undefined) {
+      return res.status(400).json({ error: "Skipped field must be provided" });
+    }
+
+    // Fetch and update the user document
+    const updatedUser = await User.findOneAndUpdate(
+      { tezWallet },
+      { $set: { 'puzzlesMinigame.skipped': skipped } },
+      { new: true, runValidators: true }
+    );
+
+    if (updatedUser) {
+      res.status(200).json(updatedUser);
+    } else {
+      res.status(404).json({ error: "User not found" });
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
+// Add a minigame to the MiniGames array and update the skipped field
+export async function updatePuzzlesArray(req, res) {
+  try {
+    const { tezWallet } = req.params;
+    const { puzzles } = req.body.puzzlesMinigame;
+
+    if (!tezWallet) {
+      return res.status(400).json({ error: "TezWallet must be provided" });
+    }
+
+    if (!Array.isArray(puzzles)) {
       return res.status(400).json({ error: "Invalid miniGames format" });
     }
 
@@ -211,7 +274,6 @@ export async function updateMinigamesData(req, res) {
     const updatedUser = await User.findOneAndUpdate(
       { tezWallet },
       {
-        $set: { 'puzzlesMinigame.skipped': skipped },
         $push: { 'puzzlesMinigame.puzzles': { $each: newPuzzles } }
       },
       { new: true, runValidators: true }
@@ -226,3 +288,4 @@ export async function updateMinigamesData(req, res) {
     res.status(500).json({ error: err.message });
   }
 }
+
