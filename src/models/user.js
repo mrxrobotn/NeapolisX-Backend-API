@@ -14,11 +14,15 @@ const userSchema = new Schema(
             type: String,
             match: [/.+@.+\..+/, 'Please fill a valid email address']
         },
-        overallTime: {
+        review: {
+            type: Number,
+        },
+        timeSpent: {
             type: String,
         },
-        review: {
-            type: String,
+        coins: {
+            type: Number,
+            default: 0,
         },
         artifactsData: {
             skipped: {
@@ -29,9 +33,6 @@ const userSchema = new Schema(
                 artefactId: {
                     type: Schema.Types.ObjectId,
                     ref: 'Artefact',
-                },
-                timeSpent: {
-                    type: String,
                 },
             }]
         },
@@ -44,10 +45,7 @@ const userSchema = new Schema(
                 puzzleId: {
                     type: Schema.Types.ObjectId,
                     ref: 'Puzzle',
-                },
-                timeSpent: {
-                    type: String,
-                },
+                }
             }]
         }
 

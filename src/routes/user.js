@@ -7,7 +7,11 @@ import {
   updatePuzzlesArray,
   checkTezWalletExists,
   getUserByWallet,
-  updateSkippedPuzzlesField
+  updateSkippedPuzzlesField,
+  setReview,
+  countArtefacts,
+  countPuzzles,
+  incrementCoins
 } from "../controllers/user.js";
 import express from "express";
 
@@ -39,5 +43,17 @@ router.route("/puzzles/:tezWallet")
 
 router.route("/id/:_id")
   .get(getUserById);
+
+router.route("/set-review")
+  .put(setReview);
+
+router.route("/count-artefacts/:tezWallet")
+  .get(countArtefacts);
+
+router.route("/count-puzzles/:tezWallet")
+  .get(countPuzzles);
+
+router.route("/increment-coins")
+  .put(incrementCoins);
 
 export default router;

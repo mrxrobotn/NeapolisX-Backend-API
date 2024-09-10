@@ -289,3 +289,105 @@ export async function updatePuzzlesArray(req, res) {
   }
 }
 
+// Update Review
+export async function setReview(req, res) {
+  const { tezWallet, review } = req.body;
+
+  if (!tezWallet || review == null) {
+    return res.status(400).json({ error: "TezWallet and review value must be provided" });
+  }
+
+  try {
+    let user = await User.findOne({ tezWallet });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    if (typeof review !== "number" || review < 0 || review > 5) {
+      return res.status(400).json({ error: "Review must be a number between 0 and 5" });
+    }
+
+    user.review = review;
+
+    await user.save();
+
+    res.status(200).json({ message: "Review updated successfully", user });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
+// Count Artefacts
+export async function countArtefacts(req, res) {
+  const { tezWallet } = req.params;
+
+  if (!tezWallet) {
+    return res.status(400).json({ error: "TezWallet must be provided" });
+  }
+
+  try {
+    // Find the user by tezWallet
+    const user = await User.findOne({ tezWallet });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Check if artifactsData exists and count the artefacts
+    const artefactsCount = user.artifactsData?.artefacts ? user.artifactsData.artefacts.length : 0;
+
+    res.status(200).json({ artefactsCount });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
+// Count Artefacts
+export async function countPuzzles(req, res) {
+  const { tezWallet } = req.params;
+
+  if (!tezWallet) {
+    return res.status(400).json({ error: "TezWallet must be provided" });
+  }
+
+  try {
+    const user = await User.findOne({ tezWallet });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const puzzlessCount = user.puzzlesMinigame?.puzzles ? user.puzzlesMinigame.puzzles.length : 0;
+
+    res.status(200).json({ puzzlessCount });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
+// Increment the coins by 1 for a user
+export async function incrementCoins(req, res) {
+  const { tezWallet } = req.body;
+
+  if (!tezWallet) {
+    return res.status(400).json({ error: "TezWallet must be provided" });
+  }
+
+  try {
+    const user = await User.findOne({ tezWallet });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    user.coins = (user.coins || 0) + 1;
+
+    await user.save();
+
+    res.status(200).json({ message: "Coins incremented by 1", coins: user.coins });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
