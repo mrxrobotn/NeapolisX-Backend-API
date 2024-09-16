@@ -8,10 +8,6 @@ const artefactSchema = new Schema(
             required: true,
             unique: true,
         },
-        price: {
-            type: Number,
-            required: true
-        },
         keyHash: {
             type: String,
             required: true
