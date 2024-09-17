@@ -5,6 +5,7 @@ import cors from 'cors';
 import userRoutes from './src/routes/user.js';
 import artefactRoutes from './src/routes/artefact.js';
 import puzzleRoutes from './src/routes/puzzle.js';
+import heartrateRoutes from './src/routes/heartrate.js';
 
 
 const app = express();
@@ -42,5 +43,6 @@ app.use(express.json());
 app.use(`${apiURL}/users`, userRoutes);
 app.use(`${apiURL}/artefacts`, artefactRoutes);
 app.use(`${apiURL}/puzzles`, puzzleRoutes);
+app.use(`${apiURL}/heartrates`, heartrateRoutes);
 
 export default app;
