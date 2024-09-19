@@ -1,9 +1,19 @@
-import express from "express";
-import { getHeartrateValue } from "../controllers/heartrate.js";
+import express from 'express';
+import {
+  getHeartrateValue,
+  initiateOAuth,
+  handleOAuthCallback
+} from '../controllers/heartrate.js';
 
 const router = express.Router();
 
-router.route("/")
-    .get(getHeartrateValue);
+// Route to get heart rate data from MongoDB
+router.get('/', getHeartrateValue);
+
+// Route to start OAuth 2.0 authorization
+router.get('/auth', initiateOAuth);
+
+// OAuth callback route to handle authorization response
+router.get('/auth/callback', handleOAuthCallback);
 
 export default router;
