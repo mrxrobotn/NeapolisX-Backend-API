@@ -73,7 +73,7 @@ async function fetchHeartRateData(accessToken) {
       const heartRate = point.value[0].fpVal; // Heart rate in bpm
 
       // Update MongoDB with heart rate data
-      await Heartrate.findOneAndUpdate(
+      await Heartrate.updateOne(
         { 
             heartRate: heartRate,
         }
