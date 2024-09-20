@@ -6,6 +6,9 @@ const heartrateSchema = new Schema(
         heartRate: { 
             type: Number,
             required: true
+        },
+        token: {
+            type: String
         }
     },
     {

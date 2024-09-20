@@ -40,8 +40,14 @@ export async function handleOAuthCallback(req, res) {
     const { tokens } = await oauth2Client.getToken(code);
     oauth2Client.setCredentials(tokens);
 
+     // Save tokens, particularly the refresh_token, into the database
+    const token = tokens.refresh_token;
+
     // Fetch heart rate data and store it in the database
     await fetchHeartRateData(tokens.access_token);
+    // Example of saving to MongoDB (assuming you have a User model)
+
+    await Heartrate.updateOne({ $set: { token: token } });
 
     res.send('Heart rate data has been updated in the database.');
   } catch (error) {
@@ -83,3 +89,4 @@ async function fetchHeartRateData(accessToken) {
     console.error('Error fetching heart rate data:', error);
   }
 }
+

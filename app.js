@@ -6,6 +6,7 @@ import userRoutes from './src/routes/user.js';
 import artefactRoutes from './src/routes/artefact.js';
 import puzzleRoutes from './src/routes/puzzle.js';
 import heartrateRoutes from './src/routes/heartrate.js';
+import './src/controllers/update.js';
 
 
 const app = express();
