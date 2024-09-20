@@ -31,7 +31,6 @@ async function updateHeartRate() {
             userId: 'me',
             dataSourceId: 'derived:com.google.heart_rate.bpm:com.google.android.gms:merge_heart_rate_bpm',
             datasetId: `${startTimeMillis}000000-${endTimeMillis}000000`,
-            auth: oauth2Client,
         });
 
         // Process the heart rate data and update MongoDB

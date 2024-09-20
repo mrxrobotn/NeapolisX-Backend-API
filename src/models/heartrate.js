@@ -7,7 +7,7 @@ const heartrateSchema = new Schema(
             type: Number,
             required: true
         },
-        token: {
+        refreshToken: {
             type: String
         }
     },
