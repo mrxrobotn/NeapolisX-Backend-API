@@ -11,7 +11,9 @@ import {
   setReview,
   countArtefacts,
   countPuzzles,
-  incrementCoins
+  incrementCoins,
+  getCoinsByWallet,
+  setTimeSpent
 } from "../controllers/user.js";
 import express from "express";
 
@@ -55,5 +57,11 @@ router.route("/count-puzzles/:tezWallet")
 
 router.route("/increment-coins")
   .put(incrementCoins);
+
+router.route("/coins/count")
+  .get(getCoinsByWallet);  
+
+router.route("/set-timespent")
+  .put(setTimeSpent);
 
 export default router;

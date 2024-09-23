@@ -1,10 +1,13 @@
 import express from 'express';
 import {
   initiateOAuth,
-  handleOAuthCallback
+  handleOAuthCallback,
+  getHeartrateValue
 } from '../controllers/heartrate.js';
 
 const router = express.Router();
+
+router.get('/', getHeartrateValue);
 
 // Route to start OAuth 2.0 authorization
 router.get('/auth', initiateOAuth);

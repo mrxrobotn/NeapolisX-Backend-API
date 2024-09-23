@@ -359,9 +359,9 @@ export async function countPuzzles(req, res) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const puzzlessCount = user.puzzlesMinigame?.puzzles ? user.puzzlesMinigame.puzzles.length : 0;
+    const puzzlesCount = user.puzzlesMinigame?.puzzles ? user.puzzlesMinigame.puzzles.length : 0;
 
-    res.status(200).json({ puzzlessCount });
+    res.status(200).json({ puzzlesCount });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -387,6 +387,48 @@ export async function incrementCoins(req, res) {
     await user.save();
 
     res.status(200).json({ message: "Coins incremented by 1", coins: user.coins });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+}
+
+export function getCoinsByWallet(req, res) {
+  const tezWallet = req.body.tezWallet;
+
+  User.findOne({ tezWallet: tezWallet })
+    .then((doc) => {
+      if (doc) {
+        res.status(200).json({ coins: doc.coins });
+      } else {
+        res.status(404).json({ error: "Wallet not found" });
+      }
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+}
+
+// Update Review
+export async function setTimeSpent(req, res) {
+  const { tezWallet, timeSpent } = req.body;
+
+  if (!tezWallet || timeSpent == null) {
+    return res.status(400).json({ error: "TezWallet and timeSpent value must be provided" });
+  }
+
+  try {
+    let user = await User.findOne({ tezWallet });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    user.timeSpent = timeSpent;
+
+    await user.save();
+
+    res.status(200).json({ message: "TimeSpent updated successfully", user });
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
