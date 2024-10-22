@@ -1,5 +1,5 @@
 import { google } from 'googleapis';
-import Heartrate from '../models/heartrate.js';
+import Heartrate2 from '../models/heartrate2.js';
 
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
@@ -26,7 +26,7 @@ export async function handleOAuthCallback(req, res) {
 
     // Store the refresh token in MongoDB if it exists
     if (tokens.refresh_token) {
-      await Heartrate.updateOne(
+      await Heartrate2.updateOne(
         {}, // Update the single document (no userId required)
         { $set: { refreshToken: tokens.refresh_token } },
         { upsert: true } // Create the document if it doesn't exist
@@ -49,7 +49,7 @@ async function fetchHeartRateData() {
   const fitness = google.fitness('v1');
 
   // Retrieve the stored refresh token from the single document
-  const heartrateDoc = await Heartrate.findOne();
+  const heartrateDoc = await Heartrate2.findOne();
   if (!heartrateDoc || !heartrateDoc.refreshToken) {
     throw new Error('No refresh token found.');
   }
@@ -79,7 +79,7 @@ async function fetchHeartRateData() {
     // Loop through and update MongoDB
     for (const point of heartRatePoints) {
       const heartRate = point.value[0].fpVal;
-      await Heartrate.updateOne(
+      await Heartrate2.updateOne(
         {}, // Update the single document
         { $set: { heartRate: heartRate } }
       );
@@ -99,7 +99,7 @@ function startHeartRateAutomation() {
 
 // Method to get heart rate from MongoDB
 export function getHeartrateValue(req, res) {
-  Heartrate.findOne()
+  Heartrate2.findOne()
     .then((doc) => {
       res.status(200).json(doc);
     })

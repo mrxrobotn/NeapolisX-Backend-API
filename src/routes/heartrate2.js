@@ -3,7 +3,7 @@ import {
   initiateOAuth,
   handleOAuthCallback,
   getHeartrateValue
-} from '../controllers/heartrateV2.js';
+} from '../controllers/heartrate2.js';
 
 const router = express.Router();
 
