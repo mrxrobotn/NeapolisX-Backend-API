@@ -6,6 +6,7 @@ import userRoutes from './src/routes/user.js';
 import artefactRoutes from './src/routes/artefact.js';
 import puzzleRoutes from './src/routes/puzzle.js';
 import heartrateRoutes from './src/routes/heartrate.js';
+import heartrateV2Routes from './src/routes/heartrateV2.js';
 
 
 const app = express();
@@ -44,5 +45,6 @@ app.use(`${apiURL}/users`, userRoutes);
 app.use(`${apiURL}/artefacts`, artefactRoutes);
 app.use(`${apiURL}/puzzles`, puzzleRoutes);
 app.use(`${apiURL}/heartrates`, heartrateRoutes);
+app.use(`${apiURL}/heartrates2`, heartrateV2Routes);
 
 export default app;
